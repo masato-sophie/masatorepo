@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+.submit_button{
+    display: block;
+    padding: 7px 25px;
+    border-radius: 7px;
+    border: none;
+    border-bottom: 4px solid #1d7dcc;
+    background-color: #2196f3;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    appearance: none;
+}
+
+h1{
+    color: red;
+}

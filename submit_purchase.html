@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>消費活動を登録してくれ</title>
+        <style>
+            .submit_button{
+                display: block;
+                padding: 7px 25px;
+                border-radius: 7px;
+                border: none;
+                border-bottom: 4px solid #1d7dcc;
+                background-color: #2196f3;
+                font-size: 16px;
+                font-weight: bold;
+                color: #fff;
+                cursor: pointer;
+                appearance: none;
+            }
+        </style>
+        <link rel="stylesheet" href="household.css">
+    </head>
+    <body>
+        <h1>今日の消費活動を教えてくれ！<br>
+        今日は何を買ったんだ？</h1>
+
+            <form method="post">
+                <div class="food_cost_category"><h2>・食費</h2></div>
+                
+                <table>
+                    <tr>
+                        <td><input type="text" name="purchase_name_1" placeholder="商品名は？（任意）"></td>
+                        <td><input type="number" name="purchase_amount_1" placeholder="いくらだ？"></td>
+                        <td><input type="text" name="purchase_comment_1" placeholder="備考があれば書け（任意）"></td>
+                    </tr>
+                    <tr>
+                            <td><input type="text" name="purchase_name_2"></td>
+                            <td><input type="number" name="purchase_amount_2"></td>
+                            <td><input type="text" name="purchase_comment_2"></td>
+                    </tr>
+                    <tr>
+                            <td><input type="text" name="purchase_name_3"></td>
+                            <td><input type="number" name="purchase_amount_3"></td>
+                            <td><input type="text" name="purchase_comment_3"></td>
+                    </tr>
+                    <tr>
+                            <td><input type="text" name="purchase_name_4"></td>
+                            <td><input type="number" name="purchase_amount_4"></td>
+                            <td><input type="text" name="purchase_comment_4"></td>
+                    </tr>
+                    <tr>
+                            <td><input type="text" name="purchase_name_5"></td>
+                            <td><input type="number" name="purchase_amount_5"></td>
+                            <td><input type="text" name="purchase_comment_5"></td>
+                    </tr>
+                </table>
+
+                <div class="cnsmbl_cost_category"><h2>・消耗品</h2></div>
+
+                <table>
+                    <tr>
+                        <td><input type="text" name="purchase_name_6" placeholder="商品名は？（任意）"></td>
+                        <td><input type="number" name="purchase_amount_6" placeholder="いくらだ？"></td>
+                        <td><input type="text" name="purchase_comment_6" placeholder="備考があれば書け（任意）"></td>
+                    </tr>
+                    <tr>                
+                        <td><input type="text" name="purchase_name_7"></td>
+                        <td><input type="number" name="purchase_amount_7"></td>
+                        <td><input type="text" name="purchase_comment_7"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="purchase_name_8"></td>
+                        <td><input type="number" name="purchase_amount_8"></td>
+                        <td><input type="text" name="purchase_comment_8"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="purchase_name_9"></td>
+                        <td><input type="number" name="purchase_amount_9"></td>
+                        <td><input type="text" name="purchase_comment_9"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="purchase_name_10"></td>
+                        <td><input type="number" name="purchase_amount_10"></td>
+                        <td><input type="text" name="purchase_comment_10"></td>
+                    </tr>
+                </table>
+
+                <div class="food_cost_category"><h2>・サービス、その他</h2></div>
+
+                <table>
+                    <tr>
+                        <td><input type="text" name="purchase_name_11" placeholder="商品名は？（任意）"></td>
+                        <td><input type="number" name="purchase_amount_11" placeholder="いくらだ？"></td>
+                        <td><input type="text" name="purchase_comment_11" placeholder="備考があれば書け（任意）"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="purchase_name_12"></td>
+                        <td><input type="number" name="purchase_amount_12"></td>
+                        <td><input type="text" name="purchase_comment_12"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="purchase_name_13"></td>
+                        <td><input type="number" name="purchase_amount_13"></td>
+                        <td><input type="text" name="purchase_comment_13"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="purchase_name_14"></td>
+                        <td><input type="number" name="purchase_amount_14"></td>
+                        <td><input type="text" name="purchase_comment_14"></td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" name="purchase_name_15"></td>
+                        <td><input type="number" name="purchase_amount_15"></td>
+                        <td><input type="text" name="purchase_comment_15"></td>
+                    </tr>
+                </table>
+
+                <br>
+
+                    <input type="submit" class="submit_button" value="一括登録！">
+            </form>
+        
+
+        <form action="/main/household/{{user_id}}">
+            <br>
+            <input type="submit" value="家計管理画面へ戻れるぞ！">
+        </form>
+    </body>
+</html>

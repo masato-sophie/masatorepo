@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+    <head>
+        <title>履歴閲覧</title>
+        <style>
+            #main_contents{
+                display: flex;
+                justify-content: center;
+            }
+
+            #p_table{
+                display: inline-block;
+            }
+
+            #explain{
+                display: inline;
+            }
+
+            #data_number_display{
+                display: inline;
+                padding: 0 0 0 40%;
+            }
+
+            #data_amount{
+                display: inline;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            h1{
+                display: block;
+                text-align: center;
+            }
+
+            #back_button{
+                display: block;
+                margin-left: 80%;
+            }
+            .delete_button{
+                display: block;
+                background-color: rgb(209, 60, 97);
+                color: #fff;
+                font-weight: bold;
+                cursor: pointer;
+                appearance: none;
+            }
+
+            .edit_button{
+                display: block;
+                background-color: rgb(39, 138, 231);
+                color: black;
+                font-weight: bold;
+                cursor: pointer;
+                appearance: none;
+            }
+
+            #page_list{
+                display: block;
+                text-align: center;
+                padding-top: 5px;
+            }
+
+            .page_no{
+                padding: 0 5px;
+                font-size: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>ここでは履歴を閲覧・管理できるぞ！</h1>
+
+        <br>
+        <div id="main_contents">
+            <div id="p_table" >
+                <p id="explain">修正したい場合は修正したい項目に上書きして「修正」ボタンを押してくれ！</p>
+                <div id="data_number_display"><div id="data_amount">{{data_number}}</div>件登録済み</div>
+                <table id="data_list" border="1" cellpadding="4">
+                    <tr>
+                        <th>商品No.</th><th>カテゴリー</th><th>商品</th><th>金額</th><th>初登録日</th><th>コメント</th>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_1" value="{{commodity_history_No_1}}" readonly></td>
+                            <td>
+                                <select name="category_1" class="category">
+                                    <option value="{{category_history_1}}">{{category_history_1}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_1" value="{{commodity_history_1}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_1" value="{{cost_history_1}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_1" value="{{buy_date_history_1}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_1" value="{{comment_history_1}}">
+                            </td>
+                            <td>
+                                <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button"  data-toggle="modal" data-target="#edit_modal" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_2" value="{{commodity_history_No_2}}" readonly></td>
+                            <td>
+                                <select name="category_2" class="category">
+                                    <option value="{{category_history_2}}">{{category_history_2}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_2" value="{{commodity_history_2}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_2" value="{{cost_history_2}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_2" value="{{buy_date_history_2}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_2" value="{{comment_history_2}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_3" value="{{commodity_history_No_3}}" readonly></td>
+                            <td>
+                                <select name="category_3" class="category">
+                                    <option value="{{category_history_3}}">{{category_history_3}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_3" value="{{commodity_history_3}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_3" value="{{cost_history_3}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_3" value="{{buy_date_history_3}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_3" value="{{comment_history_3}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_4" value="{{commodity_history_No_4}}" readonly></td>
+                            <td>
+                                <select name="category_4" class="category">
+                                    <option value="{{category_history_4}}">{{category_history_4}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_4" value="{{commodity_history_4}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_4" value="{{cost_history_4}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_4" value="{{buy_date_history_4}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_4" value="{{comment_history_4}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_5" value="{{commodity_history_No_5}}" readonly></td>
+                            <td>
+                                <select name="category_5" class="category">
+                                    <option value="{{category_history_5}}">{{category_history_5}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_5" value="{{commodity_history_5}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_5" value="{{cost_history_5}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_5" value="{{buy_date_history_5}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_5" value="{{comment_history_5}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_6" value="{{commodity_history_No_6}}" readonly></td>
+                            <td>
+                                <select name="category_6" class="category">
+                                    <option value="{{category_history_6}}">{{category_history_6}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_6" value="{{commodity_history_6}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_6" value="{{cost_history_6}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_6" value="{{buy_date_history_6}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_6" value="{{comment_history_6}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_7" value="{{commodity_history_No_7}}" readonly></td>
+                            <td>
+                                <select name="category_7" class="category">
+                                    <option value="{{category_history_7}}">{{category_history_7}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_7" value="{{commodity_history_7}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_7" value="{{cost_history_7}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_7" value="{{buy_date_history_7}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_7" value="{{comment_history_7}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_8" value="{{commodity_history_No_8}}" readonly></td>
+                            <td>
+                                <select name="category_8" class="category">
+                                    <option value="{{category_history_8}}">{{category_history_8}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_8" value="{{commodity_history_8}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_8" value="{{cost_history_8}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_8" value="{{buy_date_history_8}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_8" value="{{comment_history_8}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_9" value="{{commodity_history_No_9}}" readonly></td>
+                            <td>
+                                <select name="category_9" class="category">
+                                    <option value="{{category_history_9}}">{{category_history_9}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_9" value="{{commodity_history_9}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_9" value="{{cost_history_9}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_9" value="{{buy_date_history_9}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_9" value="{{comment_history_9}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+                    <tr>
+                        <form method="post" action="?">
+                            <td><input type="text" name="commodity_No_10" value="{{commodity_history_No_10}}" readonly></td>
+                            <td>
+                                <select name="category_10" class="category">
+                                    <option value="{{category_history_10}}">{{category_history_10}}</option>
+                                    <option value="食費">食費</option>
+                                    <option value="消耗品">消耗品</option>
+                                    <option value="サービス・その他">サービス・その他</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="commodity_10" value="{{commodity_history_10}}">
+                            </td>
+                            <td>
+                                <input type="int" name="cost_10" value="{{cost_history_10}}">
+                            </td>
+                            <td>
+                                <input type="date" name="submit_day_10" value="{{buy_date_history_10}}">
+                            </td>
+                            <td>
+                                <input type="text" name="comment_10" value="{{comment_history_10}}">
+                            </td>
+                            <td>
+                            <button type="submit" class="edit_button">修正</button>
+                            </td>
+                            <td>   
+                                <button type="submit" class="delete_button" formaction="/main/household/data_detail/page{{p}}/{{user_id}}/delete">削除</button>
+                            </td>
+                        </form>
+                    </tr>
+            </table>
+            </div>
+        </div>
+
+        <div id="page_list">
+            <a class="page_no" href="/main/household/data_detail/page{{pb2}}/{{user_id}}">{{pb2}}</a>
+            <a class="page_no" href="/main/household/data_detail/page{{pb1}}/{{user_id}}">{{pb1}}</a>
+            <a class="page_no" href="/main/household/data_detail/page{{pn}}/{{user_id}}">{{pn}}</a>
+            <a class="page_no" href="/main/household/data_detail/page{{pa1}}/{{user_id}}">{{pa1}}</a>
+            <a class="page_no" href="/main/household/data_detail/page{{pa2}}/{{user_id}}">{{pa2}}</a>
+        </div>
+
+        <br>
+
+        <form action="/main/household/{{user_id}}">
+            <input type="submit" id="back_button" value="メインメニューへ戻るか？">
+        </form>
+        
+        <script>
+            var pageNo = document.getElementsByClassName("page_no");
+            var d_amount = document.getElementById("data_amount");
+
+            var amount = d_amount.textContent;
+            console.log(amount);
+
+            amount = Number(amount) - 1;
+            amount = Math.trunc(amount / 10) + 1;
+            console.log(amount)
+            console.log(pageNo[1].textContent)
+
+            for(var i = 0; i < 5; i++){
+                if (Number(pageNo[i].textContent) > amount){
+                    pageNo[i].style.display = 'none';
+                }
+            }
+        </script>
+    </body>
+</html>

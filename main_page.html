@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+    <head>
+        <title>メインメニュー</title>
+        <link rel="stylesheet" href="household.css">
+
+    </head>
+    <body>
+        <div style="display: inline-flex;">
+            <h1>ようこそ、{{user_name}}！何がしたいんだ？</h1>
+            <h2>{{date}}</h2>
+        </div>
+        <form action="/main/household/{{user_id}}" method="get">
+            <input type="submit" value="家計を管理するか？">
+        </form>
+        
+        <br>
+
+        <form action="/logout">
+            <input type="submit" value="今日は終わっておくか？">
+        </form>
+    </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <title>家計管理メイン画面</title>
+    </head>
+    <body>
+        <h1>ここではお前の家計管理状況が確認できるぞ！<br>
+            お前が賢く生きるサポートになれると嬉しい。</h1>
+        <h2>家計概要</h2>
+        <table border="1" cellpadding="4">
+            <tr>
+                <th><div class="total_txt">出費総額</div></th>
+                <td><div class="total_cost"><b><u>{{total_all}}円！　収入割合{{cost_income_rate}}％</u></b></div></td>
+                <td><div class="total_perday">（{{cost_per_day}}円/日）</div></td>
+            </tr>
+            <tr>            
+                <th><div class="food_cost_txt">食費</div></th>
+                <td><div class="food_cost"><b>{{food_all}}円　収入割合{{food_income_rate}}％</b></div></td>
+                <td><div class="food_total_perday">（{{food_cost_per_day}}円/日）</div></td>
+            </tr>
+            <tr>
+                <th><div class="cnsmbl_cost_txt">消耗品</div></th>
+                <td><div class="cnsmbl_cost"><b>{{consumable_all}}円　収入割合{{cnsmbl_income_rate}}％</b></div></td>
+                <td><div class="food_total_perday">（{{cnsmbl_cost_per_day}}円/日）</div></td>
+            </tr>
+            <tr>
+                <th><div class="cnsmbl_cost_txt">サービス・その他　</div></th>
+                <td><div class="cnsmbl_cost"><b>{{service_all}}円　収入割合{{service_income_rate}}％</b></div></td>
+                <td><div class="food_total_perday">（{{service_cost_per_day}}円/日）</div></td>
+            </tr>
+        </table>
+
+        <br>
+        <br>
+
+        <form action="/main/household/submit/{{user_id}}">
+            <input type="submit" value="新しいのはここで登録！">
+        </form>
+
+        <br>
+
+        <form action="/main/household/data_detail/page1/{{user_id}}" method="get">
+            <input type="submit" value="過去の履歴を閲覧できるぞ">
+        </form>
+
+        <br>
+        <br>
+        
+        <form action="/main/{{user_id}}" method="get">
+            <input type="submit" value="メインメニューへ戻れるぞ">
+        </form>
+
+    </body>
+</html>
