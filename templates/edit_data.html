@@ -71,6 +71,7 @@
         <h1>ここでは履歴を閲覧・管理できるぞ！</h1>
 
         <br>
+
         <div id="main_contents">
             <div id="p_table" >
                 <p id="explain">修正したい場合は修正したい項目に上書きして「修正」ボタンを押してくれ！</p>
@@ -394,11 +395,14 @@
         </div>
 
         <div id="page_list">
+            <a id="back_page" href="/main/household/data_detail/page{{back_page}}/{{user_id}}">前へ</a>
             <a class="page_no" href="/main/household/data_detail/page{{pb2}}/{{user_id}}">{{pb2}}</a>
             <a class="page_no" href="/main/household/data_detail/page{{pb1}}/{{user_id}}">{{pb1}}</a>
             <a class="page_no" href="/main/household/data_detail/page{{pn}}/{{user_id}}">{{pn}}</a>
             <a class="page_no" href="/main/household/data_detail/page{{pa1}}/{{user_id}}">{{pa1}}</a>
             <a class="page_no" href="/main/household/data_detail/page{{pa2}}/{{user_id}}">{{pa2}}</a>
+            <a id="next_page" href="/main/household/data_detail/page{{next_page}}/{{user_id}}">次へ</a>
+            <div id="current_page" style="display: none;">{{p}}</div>
         </div>
 
         <br>
@@ -410,6 +414,9 @@
         <script>
             var pageNo = document.getElementsByClassName("page_no");
             var d_amount = document.getElementById("data_amount");
+            var Back_page = document.getElementById("back_page");
+            var Next_page = document.getElementById("next_page");
+            var Current_page = document.getElementById("current_page")
 
             var amount = d_amount.textContent;
             console.log(amount);
@@ -417,11 +424,25 @@
             amount = Number(amount) - 1;
             amount = Math.trunc(amount / 10) + 1;
             console.log(amount)
-            console.log(pageNo[1].textContent)
 
-            for(var i = 0; i < 5; i++){
-                if (Number(pageNo[i].textContent) > amount){
-                    pageNo[i].style.display = 'none';
+            var page_array = []
+            for(i=0; i<5; i++){
+                page_array.push(Number(pageNo[i].textContent))
+            }
+            console.log(page_array)
+            console.log(Math.max.apply(null,page_array))
+            if (Current_page.textContent == '1'){
+                Back_page.style.display = 'none'
+            }else if (Math.max.apply(null,page_array) == amount + 1){
+                for (i = 0; i < 5; i++){
+                pageNo[i].textContent = Number(pageNo[i].textContent) - 1;
+                pageNo[i].href = "/main/household/data_detail/page" + pageNo[i].textContent + "/{{user_id}}"
+                }
+            }else if(Math.max.apply(null,page_array) == amount + 2){
+                for (i = 0; i < 5; i++){
+                pageNo[i].textContent = Number(pageNo[i].textContent) - 2;
+                pageNo[i].href = "/main/household/data_detail/page" + pageNo[i].textContent + "/{{user_id}}"
+                Next_page.style.display = 'none'
                 }
             }
         </script>

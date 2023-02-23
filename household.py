@@ -269,7 +269,10 @@ def data_manage(p, user_id):
     print("p:{}".format(p))
     user_id = session.get('user_id', None)
     user_name = session.get('user_name', None)
-    
+
+    back_page = int(p) - 1
+    next_page = int(p) + 1
+
     page_no = []
 
     if p == '1' or p == '2':
@@ -289,7 +292,6 @@ def data_manage(p, user_id):
         pn = str(page_no[2])
         pa1 = str(page_no[3])
         pa2 = str(page_no[4])
-
 
     sql_history = "select commodity_No, category_nm, commodity, cost, buy_date, comment from money_history where ID = '{}' order by commodity_No desc".format(user_id)
     cur.execute(sql_history)
@@ -384,7 +386,7 @@ def data_manage(p, user_id):
             except:
                 print("情報を受け取っていません。")           
 
-    return render_template('edit_data.html', user_id=user_id, pb2=pb2, pb1=pb1, pn=pn, pa1=pa1, pa2=pa2, data_number=data_number, p=p,
+    return render_template('edit_data.html', user_id=user_id, pb2=pb2, pb1=pb1, pn=pn, pa1=pa1, pa2=pa2, data_number=data_number, p=p, back_page=back_page, next_page=next_page,
     commodity_history_No_1 = commodity_No_history[0], category_history_1=category_history[0], commodity_history_1=commodity_history[0], cost_history_1=cost_history[0],buy_date_history_1=buy_date_history[0], comment_history_1=comment_history[0],
     commodity_history_No_2 = commodity_No_history[1], category_history_2=category_history[1], commodity_history_2=commodity_history[1], cost_history_2=cost_history[1],buy_date_history_2=buy_date_history[1], comment_history_2=comment_history[1],
     commodity_history_No_3 = commodity_No_history[2], category_history_3=category_history[2], commodity_history_3=commodity_history[2], cost_history_3=cost_history[2],buy_date_history_3=buy_date_history[2], comment_history_3=comment_history[2],
