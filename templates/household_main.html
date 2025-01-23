@@ -7,6 +7,14 @@
         <h1>ここではお前の家計管理状況が確認できるぞ！<br>
             お前が賢く生きるサポートになれると嬉しい。</h1>
         <h2>家計概要</h2>
+
+        <form method="post" action="/main/household/{{user_id}}" id="target_month">
+            <select id="select_month" name="nameYM">
+                <option value="0">{{strYM}}</option>
+            </select>
+            <input type="submit" id="yearmonth_button" value="検索">
+        </form>
+
         <table border="1" cellpadding="4">
             <tr>
                 <th><div class="total_txt">出費総額</div></th>

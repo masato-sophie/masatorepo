@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, session, redirect, url_for
 import pyodbc as pdb
 from datetime import timedelta
 import datetime
+import calendar
 import sys
 import io
 
@@ -34,11 +35,12 @@ def submit_sql(user_id, user_name):
     month = '{0:%Y%m}'.format(today)
     sql_count = "select max(commodity_No) as number\
                 from money_history \
-                where ID = '{}' and FORMAT(buy_date, 'yyyyMM')='{}'".format(user_id, month)
+                where ID = '{}' and substring(commodity_No,1,6)='{}'".format(user_id, month)
     print("sql_count:{}".format(sql_count))
     cur.execute(sql_count)
     count_array = cur.fetchall()
     commodity_No = count_array[0].number
+    print(commodity_No)
     if commodity_No != None:
         commodity_No = count_array[0].number
     else:
@@ -163,77 +165,172 @@ def main_menu(user_id):
     return render_template('main_page.html', user_id=user_id, user_name=user_name, date=date_currender)
 
 
-@app.route('/main/household/<user_id>')
+@app.route('/main/household/<user_id>', methods=['GET', 'POST'])
 def household(user_id):
-    user_id = session.get('user_id', None)
-    user_name = session.get('user_name', None)
-    user_income = session.get('user_income', None)
-    page_id = "page1"
-    print("user_id:{}".format(user_id))
-    print("user_income:{}".format(user_income))
+    if request.method == 'POST':
+        user_id = session.get('user_id', None)
+        user_name = session.get('user_name', None)
+        user_income = session.get('user_income', None)
+        page_id = "page1"
+        print("user_id:{}".format(user_id))
+        print("user_income:{}".format(user_income))
 
-    if user_id == None:
-        return redirect('/')
+        if user_id == None:
+            return redirect('/')
 
-    date = datetime.date.today()
+        date = datetime.date.today()
+        date_ym = "{0:%Y%#m}".format(date)
+        select_value = request.form['nameYM']
+        yearmonth = int(date_ym) - int(select_value)
+        yearmonth = str(yearmonth)
+        strYM = yearmonth[:4]+"年"+yearmonth[4:]+"月"
+        day_number = calendar.monthrange(int(yearmonth[:4]), int(yearmonth[4:]))[1]
 
-    total_sql = "select convert(int, sum(A.cost)) as cost from money_history A where A.ID = '{}' and month(A.buy_date) = '{}' group by A.ID".format(user_id, date.month)
-    cur.execute(total_sql)
-    rows = cur.fetchall()
-    if rows != []:
-        total_all = rows[0].cost
-        print("総額：{}".format(total_all))
-        cost_per_day = round(total_all/date.day)
-        cost_income_rate = round(total_all/float(user_income)*100, 1)
+        total_sql = "select convert(int, sum(A.cost)) as cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' group by A.ID".format(user_id, yearmonth)
+        cur.execute(total_sql)
+        rows = cur.fetchall()
+        if rows != [] and yearmonth == date_ym:
+            total_all = rows[0].cost
+            print("総額：{}".format(total_all))
+            cost_per_day = round(total_all/date.day)
+            cost_income_rate = round(total_all/float(user_income)*100, 1)
+        elif rows != [] and yearmonth != date_ym:
+            total_all = rows[0].cost
+            print("総額：{}".format(total_all))
+            cost_per_day = round(total_all/day_number)
+            cost_income_rate = round(total_all/float(user_income)*100, 1)
+        else:
+            total_all = 0
+            cost_per_day = 0
+            cost_income_rate = 0
+
+        foodcost_sql = "select convert(int, sum(A.cost)) as food_cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' and A.category_cd = '01' group by A.ID".format(user_id, yearmonth)
+        cur.execute(foodcost_sql)
+        rows_food = cur.fetchall()
+        if rows_food != [] and yearmonth == date_ym:
+            food_all = rows_food[0].food_cost
+            food_cost_per_day = round(food_all/date.day)
+            food_income_rate = round(food_all/float(user_income)*100, 1)
+        elif rows_food != [] and yearmonth != date_ym:
+            food_all = rows_food[0].food_cost
+            food_cost_per_day = round(food_all/day_number)
+            food_income_rate = round(food_all/float(user_income)*100, 1)
+        else:
+            food_all = 0
+            food_cost_per_day = 0
+            food_income_rate = 0
+
+        cnsmblcost_sql = "select convert(int, sum(A.cost)) as consumable_cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' and A.category_cd = '02' group by A.ID".format(user_id, yearmonth)
+        cur.execute(cnsmblcost_sql)
+        rows_cnsmbl = cur.fetchall()
+        if rows_cnsmbl != [] and yearmonth == date_ym:
+            consumable_all = rows_cnsmbl[0].consumable_cost
+            cnsmbl_cost_per_day = round(consumable_all/date.day)
+            cnsmbl_income_rate = round(consumable_all/float(user_income)*100, 1)
+        elif rows_cnsmbl != [] and yearmonth != date_ym:
+            consumable_all = rows_cnsmbl[0].consumable_cost
+            cnsmbl_cost_per_day = round(consumable_all/day_number)
+            cnsmbl_income_rate = round(consumable_all/float(user_income)*100, 1)
+        else:
+            consumable_all = 0
+            cnsmbl_cost_per_day = 0
+            cnsmbl_income_rate = 0
+
+        servicecost_sql = "select convert(int, sum(A.cost)) as service_cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' and A.category_cd = '03' group by A.ID".format(user_id, yearmonth)
+        cur.execute(servicecost_sql)
+        rows_service = cur.fetchall()
+        if rows_service != [] and yearmonth == date_ym:
+            service_all = rows_service[0].service_cost
+            service_cost_per_day = round(service_all/date.day)
+            service_income_rate = round(service_all/float(user_income)*100, 1)
+        elif rows_service != [] and yearmonth != date_ym:
+            service_all = rows_service[0].service_cost
+            service_cost_per_day = round(service_all/day_number)
+            service_income_rate = round(service_all/float(user_income)*100, 1)
+        else:
+            service_all = 0
+            service_cost_per_day = 0
+            service_income_rate = 0
+
+
+        return render_template('household_main.html',user_id=user_id, user_name=user_name, yearmonth=yearmonth, strYM=strYM
+        , total_all=total_all, cost_per_day=cost_per_day, cost_income_rate=cost_income_rate
+        , food_all=food_all, food_cost_per_day=food_cost_per_day, food_income_rate=food_income_rate
+        , consumable_all=consumable_all, cnsmbl_cost_per_day=cnsmbl_cost_per_day, cnsmbl_income_rate=cnsmbl_income_rate
+        ,service_all=service_all, service_cost_per_day=service_cost_per_day, service_income_rate=service_income_rate)
+    
     else:
-        total_all = 0
-        cost_per_day = 0
-        cost_income_rate = 0
+        user_id = session.get('user_id', None)
+        user_name = session.get('user_name', None)
+        user_income = session.get('user_income', None)
+        page_id = "page1"
+        print("user_id:{}".format(user_id))
+        print("user_income:{}".format(user_income))
 
-    foodcost_sql = "select convert(int, sum(A.cost)) as food_cost from money_history A where A.ID = '{}' and month(A.buy_date) = '{}' and A.category_cd = '01' group by A.ID".format(user_id, date.month)
-    cur.execute(foodcost_sql)
-    rows_food = cur.fetchall()
-    if rows_food != []:
-        food_all = rows_food[0].food_cost
-        food_cost_per_day = round(food_all/date.day)
-        food_income_rate = round(food_all/float(user_income)*100, 1)
-    else:
-        food_all = 0
-        food_cost_per_day = 0
-        food_income_rate = 0
+        if user_id == None:
+            return redirect('/')
 
-    cnsmblcost_sql = "select convert(int, sum(A.cost)) as consumable_cost from money_history A where A.ID = '{}' and month(A.buy_date) = '{}' and A.category_cd = '02' group by A.ID".format(user_id, date.month)
-    cur.execute(cnsmblcost_sql)
-    rows_cnsmbl = cur.fetchall()
-    if rows_cnsmbl != []:
-        consumable_all = rows_cnsmbl[0].consumable_cost
-        cnsmbl_cost_per_day = round(consumable_all/date.day)
-        cnsmbl_income_rate = round(consumable_all/float(user_income)*100, 1)
+        date = datetime.date.today()
+        yearmonth = "{0:%Y%#m}".format(date)
+        strYM = "{0:%Y年%#m月}".format(date)
 
-    else:
-        consumable_all = 0
-        cnsmbl_cost_per_day = 0
-        cnsmbl_income_rate = 0
+        total_sql = "select convert(int, sum(A.cost)) as cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' group by A.ID".format(user_id, yearmonth)
+        cur.execute(total_sql)
+        rows = cur.fetchall()
+        if rows != []:
+            total_all = rows[0].cost
+            print("総額：{}".format(total_all))
+            cost_per_day = round(total_all/date.day)
+            cost_income_rate = round(total_all/float(user_income)*100, 1)
+        else:
+            total_all = 0
+            cost_per_day = 0
+            cost_income_rate = 0
 
-    servicecost_sql = "select convert(int, sum(A.cost)) as service_cost from money_history A where A.ID = '{}' and month(A.buy_date) = '{}' and A.category_cd = '03' group by A.ID".format(user_id, date.month)
-    cur.execute(servicecost_sql)
-    rows_service = cur.fetchall()
-    if rows_service != []:
-        service_all = rows_service[0].service_cost
-        service_cost_per_day = round(service_all/date.day)
-        service_income_rate = round(service_all/float(user_income)*100, 1)
-    else:
-        service_all = 0
-        service_cost_per_day = 0
-        service_income_rate = 0
+        foodcost_sql = "select convert(int, sum(A.cost)) as food_cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' and A.category_cd = '01' group by A.ID".format(user_id, yearmonth)
+        cur.execute(foodcost_sql)
+        rows_food = cur.fetchall()
+        if rows_food != []:
+            food_all = rows_food[0].food_cost
+            food_cost_per_day = round(food_all/date.day)
+            food_income_rate = round(food_all/float(user_income)*100, 1)
+        else:
+            food_all = 0
+            food_cost_per_day = 0
+            food_income_rate = 0
+
+        cnsmblcost_sql = "select convert(int, sum(A.cost)) as consumable_cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' and A.category_cd = '02' group by A.ID".format(user_id, yearmonth)
+        cur.execute(cnsmblcost_sql)
+        rows_cnsmbl = cur.fetchall()
+        if rows_cnsmbl != []:
+            consumable_all = rows_cnsmbl[0].consumable_cost
+            cnsmbl_cost_per_day = round(consumable_all/date.day)
+            cnsmbl_income_rate = round(consumable_all/float(user_income)*100, 1)
+
+        else:
+            consumable_all = 0
+            cnsmbl_cost_per_day = 0
+            cnsmbl_income_rate = 0
+
+        servicecost_sql = "select convert(int, sum(A.cost)) as service_cost from money_history A where A.ID = '{}' and convert(varchar, year(A.buy_date)) + convert(varchar, month(A.buy_date)) = '{}' and A.category_cd = '03' group by A.ID".format(user_id, yearmonth)
+        cur.execute(servicecost_sql)
+        rows_service = cur.fetchall()
+        if rows_service != []:
+            service_all = rows_service[0].service_cost
+            service_cost_per_day = round(service_all/date.day)
+            service_income_rate = round(service_all/float(user_income)*100, 1)
+        else:
+            service_all = 0
+            service_cost_per_day = 0
+            service_income_rate = 0
 
 
-    return render_template('household_main.html',user_id=user_id, user_name=user_name
-    , total_all=total_all, cost_per_day=cost_per_day, cost_income_rate=cost_income_rate
-    , food_all=food_all, food_cost_per_day=food_cost_per_day, food_income_rate=food_income_rate
-    , consumable_all=consumable_all, cnsmbl_cost_per_day=cnsmbl_cost_per_day, cnsmbl_income_rate=cnsmbl_income_rate
-    ,service_all=service_all, service_cost_per_day=service_cost_per_day, service_income_rate=service_income_rate
-    )
+        return render_template('household_main.html',user_id=user_id, user_name=user_name, yearmonth=yearmonth, strYM=strYM
+        , total_all=total_all, cost_per_day=cost_per_day, cost_income_rate=cost_income_rate
+        , food_all=food_all, food_cost_per_day=food_cost_per_day, food_income_rate=food_income_rate
+        , consumable_all=consumable_all, cnsmbl_cost_per_day=cnsmbl_cost_per_day, cnsmbl_income_rate=cnsmbl_income_rate
+        ,service_all=service_all, service_cost_per_day=service_cost_per_day, service_income_rate=service_income_rate
+        )
 
 @app.route('/main/household/submit/<user_id>', methods=['GET', 'POST'])
 def submit_data(user_id):

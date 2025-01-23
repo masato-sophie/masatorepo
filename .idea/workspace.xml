@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="7910e447-f4db-44cc-9bf0-b40c23576feb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/household.py" beforeDir="false" afterPath="$PROJECT_DIR$/household.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/edit_data.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/edit_data.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/household_main.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/household_main.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="2WqaSCPBKj26XEHXxuVtgopB45T" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7910e447-f4db-44cc-9bf0-b40c23576feb" name="Changes" comment="" />
+      <created>1697462563021</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1697462563021</updated>
+    </task>
+    <servers />
+  </component>
+</project>

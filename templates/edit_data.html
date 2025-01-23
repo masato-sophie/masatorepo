@@ -75,7 +75,7 @@
         <div id="main_contents">
             <div id="p_table" >
                 <p id="explain">修正したい場合は修正したい項目に上書きして「修正」ボタンを押してくれ！</p>
-                <div id="data_number_display"><div id="data_amount">{{data_number}}</div>件登録済み</div>
+                <div id="data_number_display"><div id="data_amount">{{data_number}}</div>件登録済</div>
                 <table id="data_list" border="1" cellpadding="4">
                     <tr>
                         <th>商品No.</th><th>カテゴリー</th><th>商品</th><th>金額</th><th>初登録日</th><th>コメント</th>
@@ -371,7 +371,7 @@
                                 </select>
                             </td>
                             <td>
-                                <input type="text" name="commodity_10" value="{{commodity_history_10}}">
+                                <input type="text" name="commodity_10" class="commodity_10" value="{{commodity_history_10}}">
                             </td>
                             <td>
                                 <input type="int" name="cost_10" value="{{cost_history_10}}">
@@ -416,7 +416,7 @@
             var d_amount = document.getElementById("data_amount");
             var Back_page = document.getElementById("back_page");
             var Next_page = document.getElementById("next_page");
-            var Current_page = document.getElementById("current_page")
+            var Current_page = document.getElementById("current_page");
 
             var amount = d_amount.textContent;
             console.log(amount);
@@ -445,6 +445,24 @@
                 Next_page.style.display = 'none'
                 }
             }
+
+            /*
+            var table = document.getElementById("data_list");
+            var Data = []
+
+            for (var i=1; i<table.rows.length; i++){
+                
+                for(var j=0; j<table.rows[i].cells.length; j++){
+                    Data.push(table.rows[i].cells[j].innerHTML)
+                }
+                
+               var Category = document.getElementsByClassName('category_10');
+               console.log(Category.value);
+                if (table.rows[i].cells[3].value == 'None'){
+                        table.deleteRow(i);
+                    }
+            }
+            */
         </script>
     </body>
 </html>
